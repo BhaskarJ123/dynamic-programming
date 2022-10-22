@@ -2,7 +2,7 @@ package DynamicProg;
 
 public class fibo {
     public static void main(String[] args) {
-        int n = 35;
+        int n = 5;
         int[] dp = new int[n];
         System.out.println(fibo(n-1,dp));
     }
