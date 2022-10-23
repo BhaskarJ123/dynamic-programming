@@ -1,0 +1,78 @@
+Recursive approach-----------------------
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int dest = cost.length;
+        int ans = Math.min(minCost(cost,0,dest),minCost(cost,1,dest));
+        return ans;
+    }
+    static int minCost(int[] cost,int src,int dest){
+        if(src>=dest)
+            return 0;
+        int cost1 = cost[src] + minCost(cost,src+1,dest);
+        int cost2 = cost[src] + minCost(cost,src+2,dest);
+        int answer = Math.min(cost1,cost2);
+        return answer;
+    }
+}
+
+
+Memoisation--------------
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int dest = cost.length;
+        int[] dp = new int[dest];
+        int ans = Math.min(minCost(cost,0,dest,dp),minCost(cost,1,dest,dp));
+        return ans;
+    }
+    static int minCost(int[] cost,int src,int dest,int[] dp){
+        if(src>=dest)
+            return 0;
+        if(dp[src]!=0)
+            return dp[src];
+        int cost1 = cost[src] + minCost(cost,src+1,dest,dp);
+        int cost2 = cost[src] + minCost(cost,src+2,dest,dp);
+        int answer = Math.min(cost1,cost2);
+        dp[src] = answer;
+        return answer;
+    }
+}
+
+Tabulation-------------------------------------
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int dest = cost.length;
+        int[] dp = new int[dest+1];
+        int ans = minCost(cost,dp);
+        return ans;
+    }
+    static int minCost(int[] cost,int[] dp){
+        int len = dp.length-1;
+        dp[len] = cost[len-1];
+        dp[len-1] = cost[len-2];
+        for(int i=len-2;i>0;i--)
+            dp[i] = cost[i-1] + Math.min(dp[i+1],dp[i+2]);
+        dp[0] = Math.min(dp[1],dp[2]);
+        return dp[0];
+    }
+}
+
+
+
+Space Optimisation--------------------------------
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int dest = cost.length;
+        int[] dp = new int[dest+1];
+        int ans = minCost(cost,dp);
+        return ans;
+    }
+    static int minCost(int[] cost,int[] dp){
+        int len = dp.length-1;
+        dp[len] = cost[len-1];
+        dp[len-1] = cost[len-2];
+        for(int i=len-2;i>0;i--)
+            dp[i] = cost[i-1] + Math.min(dp[i+1],dp[i+2]);
+        dp[0] = Math.min(dp[1],dp[2]);
+        return dp[0];
+    }
+}
