@@ -1,0 +1,92 @@
+Recursive----------------------------------------
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+        int num = Math.max(helper(nums,0),helper(nums,1));
+        return num;
+	}
+    static int helper(ArrayList<Integer> nums,int idx){
+        if(idx >= nums.size())
+            return 0;
+        int num1 = helper(nums,idx+2);
+        int num2 = helper(nums,idx+3);
+        int res =  nums.get(idx) + Math.max(num1,num2);
+        return res;
+    }
+}
+Memoisation-------------------------------------
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+        int[] dp = new int[nums.size()];
+        int num = Math.max(helper(nums,0,dp),helper(nums,1,dp));
+        return num;
+	}
+    static int helper(ArrayList<Integer> nums,int idx,int[] dp){
+        if(idx >= nums.size())
+            return 0;
+        if(dp[idx]!=0)
+            return dp[idx];
+        int num1 = helper(nums,idx+2,dp);
+        int num2 = helper(nums,idx+3,dp);
+        int res =  nums.get(idx) + Math.max(num1,num2);
+        dp[idx] = res;
+        return res;
+    }
+}
+Tabulation--------------------------------------
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+        if(nums.size() == 1)
+            return nums.get(0);
+        if(nums.size() == 2)
+            return Math.max(nums.get(0),nums.get(1));
+		int[] dp = new int[nums.size()];
+        int res = helper(nums,dp);
+        return res;
+	}
+    static int helper(ArrayList<Integer> nums,int[] dp){
+        int len = nums.size();
+        dp[len-1] = nums.get(len-1);
+        dp[len-2] = nums.get(len-2);
+        dp[len-3] = nums.get(len-3) + dp[len-1];
+        for(int i=len-4;i>=0;i--)
+          dp[i] = nums.get(i) + Math.max(dp[i+2],dp[i+3]);
+        return Math.max(dp[0],dp[1]);
+    }
+}
+Space Optimisation-----------------------------
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+        if(nums.size() == 1)
+            return nums.get(0);
+        if(nums.size() == 2)
+            return Math.max(nums.get(0),nums.get(1));
+		int[] dp = new int[nums.size()];
+        int res = helper(nums,dp);
+        return res;
+	}
+    static int helper(ArrayList<Integer> nums,int[] dp){
+        int len = nums.size();
+        int next3 = nums.get(len-1);
+        int next2 = nums.get(len-2);
+        int next1 = nums.get(len-3) + next3;
+        for(int i=len-4;i>=0;i--){
+          int curr = nums.get(i) + Math.max(next3,next2);
+          next3 = next2;
+          next2 = next1;
+          next1 = curr;
+        }
+        return Math.max(next2,next1);
+    }
+}

@@ -1,0 +1,55 @@
+Recursion-------------------------------------
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int minimumElements(int num[], int x) {
+        int res = helper(num,x);
+        if(res == Integer.MAX_VALUE)
+            res = -1;
+        return res;
+    }
+    static int helper(int[] num,int x){
+        if(x<0)
+            return Integer.MAX_VALUE;
+        if(x == 0)
+            return 0;
+        int res = Integer.MAX_VALUE;
+        for(int i=0;i<num.length;i++){
+            int ans = helper(num,x-num[i]);
+            if(ans!=Integer.MAX_VALUE)
+               res = Math.min(res,1+ans); 
+        }
+        return res;
+    }
+}
+
+Memoization------------------------------------
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int minimumElements(int num[], int x) {
+        int[] dp = new int[x+1];
+        int res = helper(num,x,dp);
+        if(res == Integer.MAX_VALUE)
+            res = -1;
+        return res;
+    }
+    static int helper(int[] num,int x,int[] dp){
+        if(x<0)
+            return Integer.MAX_VALUE;
+        if(x == 0)
+            return 0;
+        if(dp[x]!=0)
+            return dp[x];
+        int res = Integer.MAX_VALUE;
+        for(int i=0;i<num.length;i++){
+            int ans = helper(num,x-num[i],dp);
+            if(ans!=Integer.MAX_VALUE)
+               res = Math.min(res,1+ans);
+        }
+        dp[x] = res;
+        return res;
+    }
+}
