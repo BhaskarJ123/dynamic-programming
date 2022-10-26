@@ -1,0 +1,78 @@
+public class Solution { Recursion------------------------
+    public static int cutSegments(int n, int x, int y, int z) {
+        int ans = helper(n,n,x,y,z) - 1;
+        if(ans<0)
+            ans = 0;
+        return ans;
+    }
+    static int helper(int n,int len,int x,int y,int z){
+        if(len<0)
+            return 0;
+        if(len == 0)
+            return 1;
+        int p1 = helper(n,len-x,x,y,z);
+        int p2 = helper(n,len-y,x,y,z);
+        int p3 = helper(n,len-z,x,y,z);
+        if(p1 == 0 && p2 == 0 && p3 == 0)
+            return 0;
+        int max = (p1>p2)?((p1>p3)?p1:p3):((p2>p3)?p2:p3);
+        int ans = 1 + max;
+        return ans;
+    }
+}
+
+
+public class Solution { Memoization---------------------
+    public static int cutSegments(int n, int x, int y, int z) {
+        int[] dp = new int[n+1];
+        int ans = helper(n,n,x,y,z,dp) - 1;
+        if(ans<0)
+            ans = 0;
+        return ans;
+    }
+    static int helper(int n,int len,int x,int y,int z,int[] dp){
+        if(len<0)
+            return 0;
+        if(len == 0)
+            return 1;
+        if(dp[len]!=0)
+            return dp[len];
+        int p1 = helper(n,len-x,x,y,z,dp);
+        int p2 = helper(n,len-y,x,y,z,dp);
+        int p3 = helper(n,len-z,x,y,z,dp);
+        int ans = 0;
+        if(p1 == 0 && p2 == 0 && p3 == 0)
+            ans = 0;
+        else{
+            int max = (p1>p2)?((p1>p3)?p1:p3):((p2>p3)?p2:p3);
+            ans = 1 + max;
+        }
+        dp[len] = ans;
+        return ans;
+    }
+}
+
+public class Solution {Tabulation------------------------
+    public static int cutSegments(int n, int x, int y, int z) {
+        int ans = helper(n,x,y,z);
+        return ans;
+    }
+    static int helper(int n,int x,int y,int z){
+        int[] dp = new int[n+1];
+        int flag = 0;
+        dp[n-x] = 1;
+        dp[n-y] = 1;
+        dp[n-z] = 1;
+        for(int i=n;i>=0;i--){
+            if(dp[i]!=0){
+            if((i-x)>=0)
+                dp[i-x] = dp[i]+1;
+            if((i-y)>=0)
+                dp[i-y] = dp[i]+1;
+            if((i-z)>=0)
+                dp[i-z] = dp[i]+1;
+            }
+        }
+        return dp[0];
+    }
+}
