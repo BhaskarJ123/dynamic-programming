@@ -1,0 +1,34 @@
+public class Solution { //Recursion----------------
+	public static long countDerangements(int n) {
+        long res = helper(n);
+        return res;
+	}
+    static long helper(int n){
+        if(n==1)
+            return 0;
+        if(n==2)
+            return 1;
+        long ans = ((n-1)*(helper(n-1) + helper(n-2)))%1000000007;
+        return ans;
+    }
+}
+
+
+public class Solution { //Memoisation ----------------
+	public static long countDerangements(int n) {
+        long[] dp = new long[n+1];
+        long res = helper(n,dp);
+        return res;
+	}
+    static long helper(int n,long[] dp){
+        if(n==1)
+            return 0;
+        if(n==2)
+            return 1;
+        if(dp[n]!=0)
+            return dp[n];
+        long ans = ((n-1)*(helper(n-1,dp) + helper(n-2,dp)))%1000000007;
+        dp[n] = ans;
+        return ans;
+    }
+}
