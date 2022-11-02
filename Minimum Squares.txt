@@ -1,0 +1,48 @@
+class Solution{//Recursion
+    public int MinSquares(int n){
+        if(n == 1)
+          return 1;
+        int res = helper(n,n/2);
+        return res;
+    }
+    static int helper(int n,int mult){
+        if(n == 0)
+          return 0;
+        if(mult == 1)
+          return n;
+        int res = Integer.MAX_VALUE,sum = Integer.MAX_VALUE;
+        for(int i=mult;i>=1;i--){
+            if(i*i<=n)
+              sum = 1 + helper(n-i*i,i);
+            res = Math.min(res,sum);
+        }
+        return res;
+    }
+}
+
+
+class Solution{//Memoisation
+    public int MinSquares(int n){
+        if(n == 1)
+          return 1;
+        int[][] dp = new int[n+1][n/2+1];
+        int res = helper(n,n/2,dp);
+        return res;
+    }
+    static int helper(int n,int mult,int[][] dp){
+        if(n == 0)
+          return 0;
+        if(mult == 1)
+          return n;
+        if(dp[n][mult]!=0)
+          return dp[n][mult];
+        int res = Integer.MAX_VALUE,sum = Integer.MAX_VALUE;
+        for(int i=mult;i>=1;i--){
+            if(i*i<=n)
+              sum = 1 + helper(n-i*i,i,dp);
+            res = Math.min(res,sum);
+        }
+        dp[n][mult] = res;
+        return res;
+    }
+}
